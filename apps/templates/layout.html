@@ -33,20 +33,20 @@
                     <li><a href="#">相册</a></li>
                     <li><a href="#">关于</a></li>
                 </ul>
-{#                <ul class="nav navbar-nav navbar-right">#}
-{#                    {% if "user_name" in session %}#}
-{#                        <li id="nav-2"><a href="{{ url_for("user_center") }}">个人中心</a></li>#}
-{#                        <li id="nav-3"><a href="{{ url_for("logout") }}">退出</a></li>#}
-{#                    {% else %}#}
-{#                        <li id="nav-4"><a href="{{ url_for("user_login") }}">登录 </a></li>#}
-{#                        <li id="nav-5"><a href="{{ url_for("user_regist") }}">注册</a></li>#}
-{#                    {% endif %}#}
-{#                    <!--#}
-{#                    <li class="active"><a href="{{ url_for("user_login") }}">登录 <span class="sr-only">(current)</span></a></li>#}
-{#                    <li><a href="{{ url_for("user_regist") }}">注册</a></li>#}
-{#                    <li><a href="{{ url_for("logout") }}">退出</a></li>#}
-{#                    -->#}
-{#                </ul>#}
+                <ul class="nav navbar-nav navbar-right">
+                    {% if "user_name" in session %}
+                        <li id="nav-2"><a href="{{ url_for("user_center") }}">个人中心</a></li>
+                        <li id="nav-3"><a href="{{ url_for("logout") }}">退出</a></li>
+                    {% else %}
+                        <li id="nav-4"><a href="{{ url_for("user_login") }}">登录 </a></li>
+                        <li id="nav-5"><a href="{{ url_for("user_regist") }}">注册</a></li>
+                    {% endif %}
+                    <!--
+                    <li class="active"><a href="{{ url_for("user_login") }}">登录 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="{{ url_for("user_regist") }}">注册</a></li>
+                    <li><a href="{{ url_for("logout") }}">退出</a></li>
+                    -->
+                </ul>
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
