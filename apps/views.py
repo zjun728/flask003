@@ -1,8 +1,7 @@
 from werkzeug.utils import secure_filename
 
 from apps import app
-from apps.utils import create_folder, change_filename_with_timestamp_uuid, secure_filename_with_timestamp, \
-    secure_filename_with_uuid
+from apps.utils import create_folder, secure_filename_with_uuid, check_files_extension, ALLOWED_IMAGEEXTENSIONS
 
 from flask import url_for, render_template, request, redirect, flash, make_response
 
@@ -92,7 +91,10 @@ def logout():  # 退出登录
 def user_regist():  # 注册
     form = RegistForm()
     if form.validate_on_submit():  # 检查提交方式是否为post 验证forms.py定义的validators 验证是否通过
-
+        # 检查用户上传的头像文件名是否符合要求
+        if not check_files_extension([form.user_face.data.filename], ALLOWED_IMAGEEXTENSIONS):
+            flash("头像文件格式错误！", category="err")
+            return render_template("user_regist.html", form=form)
         # 查看用户是否存在
         user_name = form.user_name.data
         user_one = query_user_by_name(user_name)
@@ -149,7 +151,8 @@ def user_center():  # 个人中心
 @user_login_req
 def user_detail():  # 个人信息
     user = query_user_by_name(session.get("user_name"))
-    return render_template("user_detail.html", user=user)
+    uploads_folder = app.config["UPLOADS_RELATIVE"]
+    return render_template("user_detail.html", uploads_folder=uploads_folder, user=user)
 
 
 @app.route('/pwd/', methods=['GET', 'POST'])

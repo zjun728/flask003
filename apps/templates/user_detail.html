@@ -22,12 +22,12 @@
         <div class="col-md-10">
 
             {% for message in get_flashed_messages(with_categories=False, category_filter=("err")) %}
-                    <h3 style="color: red"> {{ message }}</h3>
-                {% endfor %}
+                <h3 style="color: red"> {{ message }}</h3>
+            {% endfor %}
 
-                {% for message in get_flashed_messages(with_categories=False, category_filter=("ok")) %}
-                    <h3 style="color: green"> {{ message }}</h3>
-                {% endfor %}
+            {% for message in get_flashed_messages(with_categories=False, category_filter=("ok")) %}
+                <h3 style="color: green"> {{ message }}</h3>
+            {% endfor %}
             <div class="jumbotron" style="padding-top: 10px">
                 <h2>个人信息</h2>
                 <hr style="border: dashed"/>
@@ -36,7 +36,7 @@
                 <p>年龄：{{ user.age }}</p>
                 <p>生日：{{ user.birthday }}</p>
                 <p>头像：{{ user.face }}</p>
-                <img src="{{ url_for("static",filename="uploads/"+user.name+"/"+ user.face) }}">
+                <img src="{{ url_for("static",filename=uploads_folder+"/"+user.name+"/"+ user.face) }}" width="150px">
             </div>
         </div>
 

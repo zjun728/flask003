@@ -14,8 +14,9 @@ APPS_DIR = os.path.dirname(__file__)  # os.path.dirname(__file__)为 当前文�
 STATIC_DIR = os.path.join(APPS_DIR, "static/")
 # 数据库文件路径
 app.config["DATABASE"] = os.path.join(APPS_DIR, "database.db")
+app.config["UPLOADS_RELATIVE"] = "uploads"
 # 上传文件存储路径路径
-app.config["UPLOADS_FOLDER"] = os.path.join(STATIC_DIR, "uploads")
+app.config["UPLOADS_FOLDER"] = os.path.join(STATIC_DIR, app.config["UPLOADS_RELATIVE"])
 
 create_folder(app.config["UPLOADS_FOLDER"])  # 创建uploads
 
