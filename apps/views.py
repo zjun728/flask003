@@ -1,3 +1,5 @@
+import shutil
+
 from werkzeug.utils import secure_filename
 
 from apps import app
@@ -185,6 +187,7 @@ def user_info():  # 修改个人信息
 
     form = InfoForm()
     if form.validate_on_submit():
+
         current_login_name = session.get("user_name")
         old_name = user.name
         new_name = request.form["user_name"]
@@ -195,7 +198,25 @@ def user_info():  # 修改个人信息
             user.email = request.form["user_email"]
             user.age = request.form["user_age"]
             user.birthday = request.form["user_birthday"]
-            user.face = request.form["user_face"]
+            filestorage = request.files["user_face"]  # 获取头像文件
+            if filestorage.filename != "":
+                # 检查用户上传的头像文件名是否符合要求
+                if not check_files_extension([form.user_face.data.filename], ALLOWED_IMAGEEXTENSIONS):
+                    flash("头像文件格式错误！", category="err")
+                    return redirect(url_for("user_info"))
+                # 若果上传了新的头像文件，首先删除旧的，再保存新的
+                user_folder = os.path.join(app.config["UPLOADS_FOLDER"], old_name)
+                # 删除就旧的头像
+                os.remove(path=os.path.join(user_folder, user.face))
+                # 保存新的
+                user.face = secure_filename_with_uuid(filestorage.filename)
+                filestorage.save(os.path.join(user_folder, user.face))
+                pass
+            # 判断是否修改了用户名：如果修改了则同时修改用户上传资源文件夹
+            if old_name != new_name:
+                os.rename(os.path.join(app.config["UPLOADS_FOLDER"], old_name),
+                          os.path.join(app.config["UPLOADS_FOLDER"], new_name))
+                pass
             update_user_by_name(old_name, user)
             flash(message="用户信息已更新！", category="ok")
             session.pop("user_name", None)  # 修改密码后需要重新登录，然后清除session中的数据
@@ -212,6 +233,10 @@ def user_info():  # 修改个人信息
 def user_del():  # 注销个人账号
     if request.method == "POST":
         current_login_name = session.get("user_name")
+        # 删除用户的上传的文件资源
+        del_path = os.path.join(app.config["UPLOADS_FOLDER"], current_login_name)
+        shutil.rmtree(del_path, ignore_errors=True)  # shutil文件拷贝，文件删除的第三方库
+        # 删除用户数据库数据
         delete_user_by_name(current_login_name)
         return redirect(url_for("logout"))  # 执行退出操作函数
     return render_template("user_del.html")

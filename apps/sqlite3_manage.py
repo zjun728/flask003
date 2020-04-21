@@ -132,8 +132,8 @@ def update_user_by_name(old_name, user):
     sql_update = "UPDATE users SET " + update_str + "WHERE name=?"
     args = user.tolist()
     args.append(old_name)
-    print(sql_update)  # UPDATE users SET name=?,pwd=?,email=?,age=?,birthday=?,face=?WHERE name=?
-    print(args)  # ['张小宝', '321', '321@qq', '18', '2020-04-13', '1.jpg', '张大宝']
+    # print(sql_update)  # UPDATE users SET name=?,pwd=?,email=?,age=?,birthday=?,face=?WHERE name=?
+    # print(args)  # ['张小宝', '321', '321@qq', '18', '2020-04-13', '1.jpg', '张大宝']
     g.db.execute(sql_update, args)
     g.db.commit()
 

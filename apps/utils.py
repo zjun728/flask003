@@ -23,18 +23,18 @@ def change_filename_with_timestamp_uuid(filename):
 
 # 确保文件名安全性并添加时间戳
 def secure_filename_with_timestamp(filename):
-    filename = secure_filename(filename)
-    print(filename)
-    fileinfo = os.path.splitext(filename)
-    filename = fileinfo[0] + "_" + datetime.now().strftime(" %Y%m%d%H%M%S") + fileinfo[-1].lower()
+    fileinfo = os.path.splitext(filename)  # 分割文件名和文件后缀
+    filename_prefix = secure_filename(fileinfo[0]) + "_"  # 全中文文件时secure_filename会只保留文件后缀，不包含"."  ,会导致文件重命名出错
+    filename = filename_prefix + datetime.now().strftime(" %Y%m%d%H%M%S") + fileinfo[-1].lower()
     return filename
 
 
 # 确保文件名安全性并添加随机uuid
 def secure_filename_with_uuid(filename):
-    filename = secure_filename(filename)
     fileinfo = os.path.splitext(filename)
-    filename = fileinfo[0] + "_" + str(uuid.uuid4().hex)[0:6] + fileinfo[-1].lower()
+    filename_prefix = secure_filename(fileinfo[0]) + "_"
+
+    filename = filename_prefix + str(uuid.uuid4().hex)[0:6] + fileinfo[-1].lower()
     return filename
 
 
